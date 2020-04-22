@@ -1,16 +1,9 @@
 package com.jascry.db_model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "CommentResponses")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 public class CommentResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +25,40 @@ public class CommentResponse {
 
     @Column
     private Integer dislikes;
+
+    public CommentResponse() {
+    }
+
+    public CommentResponse(Long id, String body, Author author, Comment comment, Integer likes, Integer dislikes) {
+        this.id = id;
+        this.body = body;
+        this.author = author;
+        this.comment = comment;
+        this.likes = likes;
+        this.dislikes = dislikes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public Integer getDislikes() {
+        return dislikes;
+    }
 }

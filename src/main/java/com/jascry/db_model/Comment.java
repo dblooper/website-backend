@@ -9,9 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Comments")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +31,40 @@ public class Comment {
             ,fetch = FetchType.EAGER
             ,cascade = CascadeType.ALL)
     private List<CommentResponse> commentResponse;
+
+    public Comment() {
+    }
+
+    public Comment(Long id, String body, Author author, Integer likes, Integer dislikes, List<CommentResponse> commentResponse) {
+        this.id = id;
+        this.body = body;
+        this.author = author;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.commentResponse = commentResponse;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public Integer getDislikes() {
+        return dislikes;
+    }
+
+    public List<CommentResponse> getCommentResponse() {
+        return commentResponse;
+    }
 }

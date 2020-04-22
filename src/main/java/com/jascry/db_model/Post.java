@@ -1,13 +1,16 @@
 package com.jascry.db_model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.NamedQuery;
+
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.time.LocalDateTime;
+
+@NamedQuery(
+        name="Post.getLastPostsBySubject",
+        query="FROM Post WHERE contentSubject = :SUBJECT ORDER BY creationDate DESC"
+)
 
 @Entity
 @Table(name="Posts")
@@ -42,11 +45,26 @@ public class Post {
     @Column
     private Long visitQuantity;
 
+    @Column
+    private LocalDateTime creationDate;
+
+    @Column
+    private LocalDateTime updateDate;
+
+    @PrePersist
+    protected void fillCreateDate() {
+        if(this.creationDate == null) this.creationDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void fillUpdateDate() {
+        if(this.updateDate == null) this.updateDate = LocalDateTime.now();
+    }
+
     public Post() {
     }
 
-    public Post(Long id, String name, Blob image, Author author, ContentSubject contentSubject, String body, Integer likes, Integer dislikes, Long visitQuantity) {
-        this.id = id;
+    public Post(String name, Blob image, Author author, ContentSubject contentSubject, String body, Integer likes, Integer dislikes, Long visitQuantity) {
         this.name = name;
         this.image = image;
         this.author = author;
@@ -91,5 +109,13 @@ public class Post {
 
     public Long getVisitQuantity() {
         return visitQuantity;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
     }
 }
