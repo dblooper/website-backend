@@ -34,18 +34,6 @@ public class ContentSubject {
         this.posts = posts;
     }
 
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
     public String getSubjectName() {
         return subjectName;
     }

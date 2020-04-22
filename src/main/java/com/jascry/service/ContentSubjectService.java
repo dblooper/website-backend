@@ -20,8 +20,12 @@ public class ContentSubjectService {
     @Autowired
     private SubjectMapper subjectMapper;
 
-    public List<ContentSubjectDto> getContentSubjectDtoList() {
-        return subjectMapper.getContentSubjectDtoList(contentSubjectRepository.findAll());
+    public List<ContentSubjectDto> getContentSubjectDtoList(Byte postQty) {
+        if(postQty != null && postQty > 0) {
+            return subjectMapper.getContentSubjectDtoList(contentSubjectRepository.findAll());
+        } else {
+            return subjectMapper.getContentSubjectDtoList(contentSubjectRepository.findAll());
+        }
     }
 
     public ContentSubjectDto getContentSubjectWithPosts(String subjectName) {

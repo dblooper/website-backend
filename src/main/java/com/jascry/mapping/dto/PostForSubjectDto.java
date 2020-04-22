@@ -1,6 +1,8 @@
 package com.jascry.mapping.dto;
 
 import java.sql.Blob;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PostForSubjectDto {
     private Long id;
@@ -11,11 +13,12 @@ public class PostForSubjectDto {
     private Integer dislikes;
     private Long visitQuantity;
     private AuthorForPostDto author;
+    private LocalDateTime creationDate;
 
     public PostForSubjectDto() {
     }
 
-    public PostForSubjectDto(Long id, String name, Blob image, String body, Integer likes, Integer dislikes, Long visitQuantity, AuthorForPostDto author) {
+    public PostForSubjectDto(Long id, String name, Blob image, String body, Integer likes, Integer dislikes, Long visitQuantity, AuthorForPostDto author, LocalDateTime creationDate) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -24,6 +27,7 @@ public class PostForSubjectDto {
         this.dislikes = dislikes;
         this.visitQuantity = visitQuantity;
         this.author = author;
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
@@ -56,5 +60,9 @@ public class PostForSubjectDto {
 
     public AuthorForPostDto getAuthor() {
         return author;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 }

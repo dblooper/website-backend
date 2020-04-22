@@ -20,5 +20,4 @@ public class AdminController {
         return this.authorRepository.findAll();
     }
 
-
 }
