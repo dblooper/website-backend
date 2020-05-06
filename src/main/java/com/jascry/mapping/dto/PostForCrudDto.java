@@ -1,14 +1,11 @@
 package com.jascry.mapping.dto;
 
-import com.jascry.db_model.Author;
-import com.jascry.db_model.ContentSubject;
-
-import javax.persistence.*;
 import java.sql.Blob;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
-public class PostForCRUDDto {
+public class PostForCrudDto {
+    private Long postId;
     private String name;
     private Blob image;
     private String author;
@@ -17,9 +14,11 @@ public class PostForCRUDDto {
     private Integer likes = 0;
     private Integer dislikes = 0;
     private Long visitQuantity = 0L;
+    private List<CommentForPostDto> commentsForPostDto;
     private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
 
-    public PostForCRUDDto(String name, Blob image, String author, String subjectName, String body, Integer likes, Integer dislikes, Long visitQuantity, LocalDateTime creationDate) {
+    public PostForCrudDto(String name, Blob image, String author, String subjectName, String body, Integer likes, Integer dislikes, Long visitQuantity, LocalDateTime creationDate) {
         this.name = name;
         this.image = image;
         this.author = author;
@@ -31,7 +30,22 @@ public class PostForCRUDDto {
         this.creationDate = creationDate;
     }
 
-    public PostForCRUDDto(String name, Blob image, String author, String subjectName, String body) {
+    public PostForCrudDto(Long postId, String name, Blob image, String author, String subjectName, String body, Integer likes, Integer dislikes, List<CommentForPostDto> commentsForPostDto, Long visitQuantity, LocalDateTime creationDate, LocalDateTime updateDate) {
+        this.postId = postId;
+        this.name = name;
+        this.image = image;
+        this.author = author;
+        this.subjectName = subjectName;
+        this.body = body;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.visitQuantity = visitQuantity;
+        this.commentsForPostDto = commentsForPostDto;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
+    }
+
+    public PostForCrudDto(String name, Blob image, String author, String subjectName, String body) {
         this.name = name;
         this.image = image;
         this.author = author;
@@ -39,7 +53,11 @@ public class PostForCRUDDto {
         this.body = body;
     }
 
-    public PostForCRUDDto() {
+    public PostForCrudDto() {
+    }
+
+    public Long getPostId() {
+        return postId;
     }
 
     public String getName() {
@@ -76,5 +94,13 @@ public class PostForCRUDDto {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public List<CommentForPostDto> getCommentsForPostDto() {
+        return commentsForPostDto;
     }
 }

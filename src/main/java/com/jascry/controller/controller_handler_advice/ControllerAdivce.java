@@ -2,7 +2,7 @@ package com.jascry.controller.controller_handler_advice;
 
 import com.jascry.exception.AuthorNotFoundException;
 import com.jascry.exception.ContentSubjectNotFoundException;
-import com.jascry.exception.PostNameNotProvidedException;
+import com.jascry.exception.PostDataNotProvidedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,9 +26,10 @@ public class ControllerAdivce {
     }
 
     @ResponseBody
-    @ExceptionHandler(PostNameNotProvidedException.class)
+    @ExceptionHandler(PostDataNotProvidedException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    String postNameNotFoundException(PostNameNotProvidedException ex) {
+    String postNameNotFoundException(PostDataNotProvidedException ex) {
         return ex.getMessage();
     }
+
 }

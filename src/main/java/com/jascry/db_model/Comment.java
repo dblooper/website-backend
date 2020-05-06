@@ -32,6 +32,10 @@ public class Comment {
             ,cascade = CascadeType.ALL)
     private List<CommentResponse> commentResponse;
 
+    @ManyToOne
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
+
     public Comment() {
     }
 
@@ -42,6 +46,15 @@ public class Comment {
         this.likes = likes;
         this.dislikes = dislikes;
         this.commentResponse = commentResponse;
+    }
+
+    public Comment(String body, Author author, Integer likes, Integer dislikes, List<CommentResponse> commentResponse, Post post) {
+        this.body = body;
+        this.author = author;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.commentResponse = commentResponse;
+        this.post = post;
     }
 
     public Long getId() {
@@ -66,5 +79,9 @@ public class Comment {
 
     public List<CommentResponse> getCommentResponse() {
         return commentResponse;
+    }
+
+    public Post getPost() {
+        return post;
     }
 }
