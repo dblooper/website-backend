@@ -6,6 +6,7 @@ import org.hibernate.annotations.NamedQuery;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NamedQuery(
         name="Post.getLastPostsBySubject",
@@ -36,6 +37,11 @@ public class Post {
     @Column(columnDefinition="TEXT")
     private String body;
 
+    @OneToMany(mappedBy = "post"
+            ,fetch = FetchType.EAGER
+            ,cascade = CascadeType.ALL)
+    private List<Comment> commentList;
+
     @Column
     private Integer likes;
 
@@ -64,7 +70,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(String name, Blob image, Author author, ContentSubject contentSubject, String body, Integer likes, Integer dislikes, Long visitQuantity) {
+    public Post(String name, Blob image, Author author, ContentSubject contentSubject, String body,  Integer likes, Integer dislikes, Long visitQuantity) {
         this.name = name;
         this.image = image;
         this.author = author;
@@ -73,6 +79,20 @@ public class Post {
         this.likes = likes;
         this.dislikes = dislikes;
         this.visitQuantity = visitQuantity;
+    }
+
+    public Post(Long id, String name, Blob image, Author author, ContentSubject contentSubject, String body,List<Comment> comments, Integer likes, Integer dislikes, Long visitQuantity, LocalDateTime creationDate) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.author = author;
+        this.contentSubject = contentSubject;
+        this.body = body;
+        this.commentList = comments;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.visitQuantity = visitQuantity;
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
@@ -117,5 +137,9 @@ public class Post {
 
     public LocalDateTime getUpdateDate() {
         return updateDate;
+    }
+
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 }
