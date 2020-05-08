@@ -34,18 +34,6 @@ public class SecuredUserController {
     UserAuthenticationService authentication;
 
     @Autowired
-    private ContentSubjectService contentSubjectService;
-
-    @Autowired
-    private PostService postService;
-
-    @Autowired
-    private PostRepository post;
-
-    @Autowired
-    private PostMapper postMapper;
-
-    @Autowired
     private CommentMapper commentMapper;
 
     @Autowired
@@ -60,17 +48,6 @@ public class SecuredUserController {
     boolean logout(@AuthenticationPrincipal final Author user) {
         authentication.logout(user);
         return true;
-    }
-
-    @PostMapping(path="/post")
-    @ResponseStatus(HttpStatus.CREATED)
-    PostForCrudDto addPost(@RequestBody PostForCrudDto postForCRUDDto) throws AuthorNotFoundException, ContentSubjectNotFoundException, PostDataNotProvidedException {
-        return postService.savePostToDb(postForCRUDDto);
-    }
-
-    @PutMapping(path = "/post")
-    PostForCrudDto updatePost(@RequestBody PostForCrudDto postForCRUDDto) throws PostDataNotProvidedException {
-        return postService.updatePost(postForCRUDDto);
     }
 
     @PostMapping(path="/comment")

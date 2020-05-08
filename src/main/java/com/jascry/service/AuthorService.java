@@ -39,10 +39,11 @@ public class AuthorService {
                 ,new ArrayList<>()
                 ,new ArrayList<>()
         );
-        authorRepository.save(newAuthor);
+        Author authorRetrieved = authorRepository.save(newAuthor);
         AuthorForCrudDto authorCreated = new AuthorForCrudDto(
             authorForCrudDto.getLogin()
             ,true
+            ,authorRetrieved.getRole()
             ,login(authorForCrudDto.getLogin(), authorForCrudDto.getPassword())
         );
         newAuthor.setToken(authorCreated.getFirstToken());

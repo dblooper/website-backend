@@ -1,5 +1,6 @@
 package com.jascry.mapping.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jascry.db_model.Comment;
 import com.jascry.db_model.CommentResponse;
 import com.jascry.db_model.Post;
@@ -19,6 +20,8 @@ public class AuthorForCrudDto {
 
     private boolean created;
 
+    private String role;
+
     public AuthorForCrudDto(String login, String password, String email) {
         this.login = login;
         this.password = password;
@@ -29,10 +32,11 @@ public class AuthorForCrudDto {
         this.password = password;
     }
 
-    public AuthorForCrudDto(String login, boolean created, String firstToken) {
+    public AuthorForCrudDto(String login, boolean created, String role, String firstToken) {
         this.login = login;
         this.created = created;
         this.firstToken = firstToken;
+        this.role = role;
     }
 
     public AuthorForCrudDto() {
@@ -56,5 +60,9 @@ public class AuthorForCrudDto {
 
     public String getFirstToken() {
         return this.firstToken;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

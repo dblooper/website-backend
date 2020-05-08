@@ -38,9 +38,9 @@ public class PostService {
                 ,author.orElseThrow(() -> new AuthorNotFoundException("Provided author is not found"))
                 ,contentSubject.orElseThrow(() -> new ContentSubjectNotFoundException("Provided subject name does not exists!"))
                 ,postForCRUDDto.getBody()
-                , postForCRUDDto.getLikes()
-                , postForCRUDDto.getDislikes()
-                , postForCRUDDto.getVisitQuantity());
+                ,postForCRUDDto.getLikes()
+                ,postForCRUDDto.getDislikes()
+                ,postForCRUDDto.getVisitQuantity());
 
         return postMapper.getPostDtoAfterCreation(postRepository.save(newPost));
     }
@@ -61,7 +61,6 @@ public class PostService {
                 ,Optional.ofNullable(postForCRUDDto.getVisitQuantity()).orElse(postForUpdate.getVisitQuantity())
                 ,postForUpdate.getCreationDate()
         );
-
         return postMapper.getPostDtoAfterCreation(postRepository.save(newPost));
     }
 }

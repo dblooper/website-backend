@@ -26,7 +26,7 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PACKAGE)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 
-public class UUIDAuthenticationService implements UserAuthenticationService{
+public class UuidAuthenticationService implements UserAuthenticationService{
     @NonNull
     UserRepository userRepository;
     @NonNull
@@ -42,12 +42,6 @@ public class UUIDAuthenticationService implements UserAuthenticationService{
         }
 
         String uuid = UUID.randomUUID().toString();
-
-        if(author.isAdmin()) {
-            uuid = getSpecialUUID(uuid, "leinaD");
-        } else {
-            uuid = getSpecialUUID(uuid, "UsrOrd");
-        }
 
         final User user = new User(uuid, author.getLogin());
         userRepository.save(user);
@@ -69,19 +63,5 @@ public class UUIDAuthenticationService implements UserAuthenticationService{
         authorRepository.save(author);
         user.setExpired();
         userRepository.save(user);
-    }
-
-    private String getSpecialUUID(String uuid, String implementedString) {
-        if(implementedString.length() > 6) {
-            implementedString = implementedString.substring(0,6);
-        }
-        StringBuilder stringBuilder = new StringBuilder(uuid);
-        char[] implString = implementedString.toCharArray();
-        byte j = 0;
-        for(int i = 0; i < uuid.length(); i += 6) {
-            stringBuilder.replace(i,i+1,"" + implementedString.charAt(j));
-            j++;
-        }
-        return stringBuilder.toString();
     }
 }

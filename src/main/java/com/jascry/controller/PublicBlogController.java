@@ -38,9 +38,6 @@ public class PublicBlogController {
     private PostMapper postMapper;
 
     @Autowired
-    private CommentMapper commentMapper;
-
-    @Autowired
     CommentService commentService;
 
     @GetMapping(path= "/subjects")

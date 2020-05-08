@@ -7,15 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Authors")
@@ -33,8 +31,6 @@ public class Author implements UserDetails {
     @Column(name="email")
     private String email;
 
-    private Boolean isAdmin = false;
-
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "author"
@@ -51,6 +47,9 @@ public class Author implements UserDetails {
                 ,fetch = FetchType.LAZY
                 ,cascade = CascadeType.ALL)
     private List<Post> posts;
+
+    private String role = "USER";
+
 
     private String token;
 
@@ -77,7 +76,9 @@ public class Author implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return authorities;
     }
 
     @Override
@@ -118,17 +119,15 @@ public class Author implements UserDetails {
         return token;
     }
 
-    public Boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public void setActive(boolean active) {
         isActive = active;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

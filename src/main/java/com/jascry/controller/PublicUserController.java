@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import com.jascry.db_model.User;
@@ -36,11 +37,13 @@ public class PublicUserController {
     AuthorService authorService;
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     AuthorForCrudDto register(@RequestBody AuthorForCrudDto authorForCrudDto) throws AuthorExistsException {
             return authorService.saveAuthor(authorForCrudDto);
         }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     String login(
             @RequestParam("username") final String username,
             @RequestParam("password") final String password) throws UsernameNotFoundException, WrongPasswordException {
