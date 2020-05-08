@@ -7,76 +7,71 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Objects.requireNonNull;
 
-@Builder
+@NamedQuery(
+        name = "User.isUserTokenValid",
+        query = "FROM User WHERE login = :PROVIDEDLOGIN and expired = 0"
+)
+
 @Entity
-@Getter
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User  {
     private static final long serialVersionUID = 2396654715019746670L;
 
     @Id
-    String id;
-    String username;
-    String password;
+    private String id;
+
+    private String login;
+
+    private LocalDateTime creationDate;
+
+    private Boolean expired = false;
 
     @JsonCreator
-    User(@JsonProperty("id") final String id,
-         @JsonProperty("username") final String username,
-        @JsonProperty("password") final String password) {
-        super();
+    public User(@JsonProperty("id") final String id, String login) {
         this.id = requireNonNull(id);
-        this.username = requireNonNull(username);
-        this.password = requireNonNull(password);
+        this.login = login;
     }
 
-    @JsonIgnore
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+    public User(String id, String login, Boolean expired) {
+        this.id = id;
+        this.login = login;
+        this.expired = expired;
     }
 
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return username;
+    @PrePersist
+    protected void fillInCreationDate() {
+        if(this.creationDate == null) {
+            this.creationDate = LocalDateTime.now();
+        }
     }
 
-    @JsonIgnore
-    @Override
-    public String getPassword() {
-        return password;
+    public String getId() {
+        return id;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public String getAuthor() {
+        return login;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public void setExpired() {
+        this.expired = true;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public Boolean getExpired() {
+        return expired;
     }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
 }

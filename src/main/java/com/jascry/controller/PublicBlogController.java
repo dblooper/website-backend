@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/blog")
-public class UserController {
+@RequestMapping("/public/blog")
+public class PublicBlogController {
     @Autowired
     private ContentSubjectService contentSubjectService;
 
@@ -36,9 +36,6 @@ public class UserController {
 
     @Autowired
     private PostMapper postMapper;
-
-    @Autowired
-    private CommentMapper commentMapper;
 
     @Autowired
     CommentService commentService;
@@ -53,28 +50,11 @@ public class UserController {
         return contentSubjectService.getContentSubjectWithPosts(subjectName);
     }
 
-    @PostMapping(path="/post")
-    @ResponseStatus(HttpStatus.CREATED)
-    PostForCrudDto addPost(@RequestBody PostForCrudDto postForCRUDDto) throws AuthorNotFoundException, ContentSubjectNotFoundException, PostDataNotProvidedException {
-            return postService.savePostToDb(postForCRUDDto);
-    }
-
     @GetMapping(path = "/posts")
     List<PostForCrudDto> getPosts(@RequestParam String subject, @RequestParam(required = false) Byte limit) {
         return postMapper.mapPostToPostForCrudDtoList(post.getLastPostsBySubject(new ContentSubject(subject,"",new ArrayList<>())
                                                                                 ,PageRequest.of(0, Optional.ofNullable(limit).orElse(new Byte("100")))
                                                                                 ));
-    }
-
-    @PutMapping(path = "/post")
-    PostForCrudDto updatePost(@RequestBody PostForCrudDto postForCRUDDto) throws PostDataNotProvidedException {
-        return postService.updatePost(postForCRUDDto);
-    }
-
-    @PostMapping(path="/comment")
-    @ResponseStatus(HttpStatus.CREATED)
-    CommentForCrudDto addComment(@RequestBody CommentForCrudDto commentForCrudDto) throws AuthorNotFoundException, PostDataNotProvidedException {
-        return commentService.saveCommentToDb(commentForCrudDto);
     }
 
 }
