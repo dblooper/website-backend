@@ -1,5 +1,6 @@
 package com.jascry.controller;
 
+import com.jascry.db_model.Author;
 import com.jascry.exception.AuthorNotFoundException;
 import com.jascry.exception.ContentSubjectNotFoundException;
 import com.jascry.exception.PostDataNotProvidedException;
@@ -51,12 +52,12 @@ public class SecuredUserController {
     CommentService commentService;
 
     @GetMapping("/current")
-    User getCurrent(@AuthenticationPrincipal final User user) {
+    Author getCurrent(@AuthenticationPrincipal final Author user) {
         return user;
     }
 
     @GetMapping("/logout")
-    boolean logout(@AuthenticationPrincipal final User user) {
+    boolean logout(@AuthenticationPrincipal final Author user) {
         authentication.logout(user);
         return true;
     }

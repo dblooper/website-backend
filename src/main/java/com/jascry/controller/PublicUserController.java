@@ -37,10 +37,7 @@ public class PublicUserController {
 
     @PostMapping("/register")
     AuthorForCrudDto register(@RequestBody AuthorForCrudDto authorForCrudDto) throws AuthorExistsException {
-            return new AuthorForCrudDto(
-                    authorForCrudDto.getLogin()
-                    ,authorService.saveAuthor(authorForCrudDto)
-                    , login(authorForCrudDto.getLogin(), authorForCrudDto.getPassword()));
+            return authorService.saveAuthor(authorForCrudDto);
         }
 
     @PostMapping("/login")
