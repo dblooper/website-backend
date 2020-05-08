@@ -1,11 +1,16 @@
 package com.jascry.security;
 
+import com.jascry.db_model.Author;
 import com.jascry.db_model.User;
+import com.jascry.exception.AuthorNotFoundException;
+import com.jascry.exception.WrongPasswordException;
+import com.jascry.repository.AuthorRepository;
 import com.jascry.repository.UserRepository;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,9 +25,15 @@ import static lombok.AccessLevel.PRIVATE;
 public class UUIDAuthenticationService implements UserAuthenticationService{
     @NonNull
     UserRepository userRepository;
+    @NonNull AuthorRepository authorRepository;
 
     @Override
-    public Optional<String> login(final String username, final String password) {
+    public Optional<String> login(final String username, final String password) throws UsernameNotFoundException, WrongPasswordException {
+        Author author = authorRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException("Author does not exists, Login failed!"));
+        if(!author.getPassword().equals(password)) {
+            throw new WrongPasswordException("Wrong password");
+        }
+
         final String uuid = UUID.randomUUID().toString();
         final User user = User
                 .builder()
@@ -42,6 +53,6 @@ public class UUIDAuthenticationService implements UserAuthenticationService{
 
     @Override
     public void logout(final User user) {
-
+        userRepository.delete(user);
     }
 }

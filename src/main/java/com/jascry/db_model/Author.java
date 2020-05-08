@@ -19,6 +19,9 @@ public class Author {
     @Column(name = "password")
     private String password;
 
+    @Column(name="email")
+    private String email;
+
     @OneToMany(mappedBy = "author"
             ,fetch = FetchType.LAZY
             ,cascade = CascadeType.ALL)
@@ -34,9 +37,10 @@ public class Author {
                 ,cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    public Author(String login, String password, List<CommentResponse> commentResponses, List<Comment> comments, List<Post> posts) {
+    public Author(String login, String password, String email, List<CommentResponse> commentResponses, List<Comment> comments, List<Post> posts) {
         this.login = login;
         this.password = password;
+        this.email = email;
         this.commentResponses = commentResponses;
         this.comments = comments;
         this.posts = posts;

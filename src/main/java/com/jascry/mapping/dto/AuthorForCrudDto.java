@@ -13,9 +13,26 @@ public class AuthorForCrudDto {
 
     private String password;
 
+    private String email;
+
+    private String firstToken;
+
+    private boolean created;
+
+    public AuthorForCrudDto(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
     public AuthorForCrudDto(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    public AuthorForCrudDto(String login, boolean created, String firstToken) {
+        this.login = login;
+        this.created = created;
+        this.firstToken = firstToken;
     }
 
     public AuthorForCrudDto() {
@@ -27,5 +44,17 @@ public class AuthorForCrudDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean getCreated() {
+        return this.created;
+    }
+
+    public String getFirstToken() {
+        return this.firstToken;
     }
 }

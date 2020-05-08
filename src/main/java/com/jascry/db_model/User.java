@@ -44,7 +44,6 @@ public class User implements UserDetails {
         return new ArrayList<>();
     }
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return username;

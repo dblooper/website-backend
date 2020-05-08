@@ -1,6 +1,7 @@
 package com.jascry.security;
 
 import com.jascry.db_model.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ public interface UserAuthenticationService {
      * @param password
      * @return an {@link Optional} of a user when login succeeds
      */
-    Optional<String> login(String username, String password);
+    Optional<String> login(String username, String password) throws UsernameNotFoundException;
 
     /**
      * Finds a user by its dao-key.

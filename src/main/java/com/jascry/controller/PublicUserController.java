@@ -1,15 +1,23 @@
 package com.jascry.controller;
 
+import com.jascry.db_model.Author;
+import com.jascry.exception.AuthorExistsException;
+import com.jascry.exception.WrongPasswordException;
+import com.jascry.mapping.dto.AuthorForCrudDto;
+import com.jascry.repository.AuthorRepository;
 import com.jascry.repository.UserRepository;
 import com.jascry.security.UserAuthenticationService;
+import com.jascry.service.AuthorService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 import com.jascry.db_model.User;
+
+import java.util.ArrayList;
+
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -18,33 +26,27 @@ import static lombok.AccessLevel.PRIVATE;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 @AllArgsConstructor(access = PACKAGE)
 public class PublicUserController {
-    @NonNull
+    @Autowired
     UserAuthenticationService userAuthenticationService;
 
-    @NonNull
+    @Autowired
     UserRepository userRepository;
 
-    @PostMapping("/register")
-    String register(
-            @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
-        userRepository
-                .save(
-                        User
-                                .builder()
-                                .id(username)
-                                .username(username)
-                                .password(password)
-                                .build()
-                );
+    @Autowired
+    AuthorService authorService;
 
-        return login(username, password);
-    }
+    @PostMapping("/register")
+    AuthorForCrudDto register(@RequestBody AuthorForCrudDto authorForCrudDto) throws AuthorExistsException {
+            return new AuthorForCrudDto(
+                    authorForCrudDto.getLogin()
+                    ,authorService.saveAuthor(authorForCrudDto)
+                    , login(authorForCrudDto.getLogin(), authorForCrudDto.getPassword()));
+        }
 
     @PostMapping("/login")
     String login(
             @RequestParam("username") final String username,
-            @RequestParam("password") final String password) {
+            @RequestParam("password") final String password) throws UsernameNotFoundException, WrongPasswordException {
         return userAuthenticationService
                 .login(username, password)
                 .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
